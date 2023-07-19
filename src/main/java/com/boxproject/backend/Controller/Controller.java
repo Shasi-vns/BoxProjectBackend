@@ -35,6 +35,4 @@ public class Controller {
         return activityRepo.save(acti);
 
     }
-
-
 }
