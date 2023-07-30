@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ActivityService {
@@ -18,9 +19,11 @@ public class ActivityService {
         return activityRepository.findAll();
     }
 
-    public Activity getBYId(Integer id) throws ActivityNotFoundException {
-        Activity activity = activityRepository.findByActivity_id(id);
-        if (activity!=null) return activity;
+    public Optional<Activity> getBYId(Integer id) throws ActivityNotFoundException {
+        Optional<Activity> activity = activityRepository.findById(id);
+
+        //Activity activity = activityRepository.findByActivity_id(id);
+        if (activity.isPresent()) return activity;
         else{
             throw new ActivityNotFoundException("activity not found with id : "+id);
         }
