@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class Controller {
@@ -27,7 +28,7 @@ public class Controller {
     }
 
     @GetMapping("/getactivity/{id}")
-    public Activity findactivityById(@PathVariable Integer id) throws ActivityNotFoundException {
+    public Optional<Activity> findactivityById(@PathVariable Integer id) throws ActivityNotFoundException {
 
         return activityService.getBYId(id);
     }
@@ -36,7 +37,7 @@ public class Controller {
     public List<Slots> findallTimeSlot(){
         return slotsService.findallslots();
     }
-
+ 
     @GetMapping("/getactivitiesbycity/{cityname}")
     public List<Activity> findactivitiesByCityName(@PathVariable String cityname) throws ActivityNotFoundException {
         return activityService.findBycityname(cityname);
