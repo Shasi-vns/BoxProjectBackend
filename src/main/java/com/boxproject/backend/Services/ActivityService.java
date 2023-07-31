@@ -19,6 +19,10 @@ public class ActivityService {
         return activityRepository.findAll();
     }
 
+    public List<String> getallcities(){
+        return activityRepository.listofcities();
+    }
+
     public Optional<Activity> getBYId(Integer id) throws ActivityNotFoundException {
         Optional<Activity> activity = activityRepository.findById(id);
 
