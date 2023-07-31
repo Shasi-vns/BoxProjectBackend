@@ -2,6 +2,7 @@ package com.boxproject.backend.ExceptionAdvisor;
 
 import com.boxproject.backend.Exceptions.ActivityNotFoundException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -15,20 +16,20 @@ public class ExceptionHanlderAppliocation {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleInvalidInputsExceptions(MethodArgumentNotValidException ex){
+    public ResponseEntity<Map<String, String> >handleInvalidInputsExceptions(MethodArgumentNotValidException ex){
         Map<String, String> errorMap = new HashMap<>();
         ex.getBindingResult().getFieldErrors().forEach(error -> {
             errorMap.put(error.getField(),error.getDefaultMessage());
         });
-        return errorMap;
+        return new ResponseEntity<>(errorMap,HttpStatus.BAD_REQUEST);
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(ActivityNotFoundException.class)
-    public Map<String, String> handleBusinessExceptions(ActivityNotFoundException ex){
+    public ResponseEntity<Map<String, String>> handleBusinessExceptions(ActivityNotFoundException ex){
         Map<String, String> errormap = new HashMap<>();
         errormap.put("errorMessage",ex.getMessage());
-        return errormap;
+        return new ResponseEntity<>(errormap,HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 

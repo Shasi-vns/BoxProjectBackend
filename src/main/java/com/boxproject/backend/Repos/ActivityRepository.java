@@ -15,4 +15,6 @@ public interface ActivityRepository extends JpaRepository<Activity,Integer> {
 
     @Query(value="select * from Activity a where a.activity_id like CONCAT('%',:id,'%')",nativeQuery=true)
     Activity findByActivity_id(@Param("id")Integer id);
+    @Query(value="select distinct a.activity_city from Activity a",nativeQuery=true)
+    List<String> listofcities();
 }
