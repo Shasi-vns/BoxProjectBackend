@@ -25,7 +25,7 @@ public class Activity {
     private String activity_owner_name;
     private long activity_ownwer_mobile;
     private String activity_owner_address;
-    @ManyToMany(fetch = FetchType.LAZY,cascade=CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "Activity_Slot",
             joinColumns={
                     @JoinColumn(name="activity_id_ref",referencedColumnName="activity_id")
