@@ -1,8 +1,8 @@
 package com.boxproject.backend.Entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
+// import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -11,10 +11,9 @@ public class Slots {
     @GeneratedValue
     private Integer slot_id;
     private String slot_time;
-    private String slot_status;
-    @ManyToMany(mappedBy = "slots",fetch= FetchType.LAZY)
-    @JsonBackReference
-    private Set<Activity> activity;
+    private String slot_status_Available_Today;
+    private String slot_status_Available_Tomorrow;
+   
 
     public Integer getSlot_id() {
         return slot_id;
@@ -32,19 +31,20 @@ public class Slots {
         this.slot_time = slot_time;
     }
 
-    public String getSlot_status() {
-        return slot_status;
+    public String getSlot_status_Available_Today() {
+        return slot_status_Available_Today;
     }
 
-    public void setSlot_status(String slot_status) {
-        this.slot_status = slot_status;
+    public void setSlot_status_Available_Today(String slot_status_Available_Today) {
+        this.slot_status_Available_Today = slot_status_Available_Today;
     }
 
-    public Set<Activity> getActivity() {
-        return activity;
+    public String getSlot_status_Available_Tomorrow() {
+        return slot_status_Available_Tomorrow;
     }
 
-    public void setActivity(Set<Activity> activity) {
-        this.activity = activity;
+    public void setSlot_status_Available_Tomorrow(String slot_status_Available_Tomorrow) {
+        this.slot_status_Available_Tomorrow = slot_status_Available_Tomorrow;
     }
+
 }

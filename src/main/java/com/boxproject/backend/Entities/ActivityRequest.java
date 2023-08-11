@@ -1,42 +1,39 @@
 package com.boxproject.backend.Entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-// import java.io.Serializable;
+// import java.util.List;
 import java.util.Set;
-
-@Entity
 @Data
 @AllArgsConstructor(staticName = "build")
 @NoArgsConstructor
-public class Activity {
-    @Id
-    @GeneratedValue
-    private Integer activity_id;
+public class ActivityRequest {
+
+    @NotBlank(message = "Please enter a valid Activity name")
     private String activity_name;
+    @NotNull(message = "Please enter a valid City name")
     private String activity_city;
+    @NotNull(message = "Please enter a valid address name")
     private String activity_address;
+    @NotNull(message = "Please enter a valid State")
     private String activity_state;
+    @Max(400)
+    @Min(150)
     private Integer activity_price;
+    @Max(5)
+    @Min(1)
     private Integer activity_rating;
+    @NotNull(message="Please enter a valid OwnerName")
     private String activity_owner_name;
+    @NotNull(message="Please enter a valid Mobile Number")
     private long activity_ownwer_mobile;
+    @NotNull(message = "Please enter a valid Owner address")
     private String activity_owner_address;
-    
-    @OneToMany(targetEntity = Slots.class,cascade= CascadeType.ALL)
-    @JoinColumn(name="activity_slot",referencedColumnName = "activity_id")
     private Set<Slots> slots;
-
-    public Integer getActivity_id() {
-        return activity_id;
-    }
-
-    public void setActivity_id(Integer activity_id) {
-        this.activity_id = activity_id;
-    }
 
     public String getActivity_name() {
         return activity_name;
