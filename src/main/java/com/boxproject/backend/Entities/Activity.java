@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
+// import java.io.Serializable;
 import java.util.Set;
 
 @Entity
@@ -25,16 +25,9 @@ public class Activity {
     private String activity_owner_name;
     private long activity_ownwer_mobile;
     private String activity_owner_address;
-    @ManyToMany(fetch = FetchType.LAZY,cascade=CascadeType.ALL)
-    @JoinTable(name = "Activity_Slot",
-            joinColumns={
-                    @JoinColumn(name="activity_id_ref",referencedColumnName="activity_id")
-            },
-            inverseJoinColumns={
-                    @JoinColumn(name="slot_id_ref",referencedColumnName="slot_id")
-            }
-    )
-//    @JsonManagedReference
+    
+    @OneToMany(targetEntity = Slots.class,cascade= CascadeType.ALL)
+    @JoinColumn(name="activity_slot",referencedColumnName = "activity_id")
     private Set<Slots> slots;
 
     public Integer getActivity_id() {
