@@ -33,6 +33,7 @@ public class ActivityRequest {
     private long activity_ownwer_mobile;
     @NotNull(message = "Please enter a valid Owner address")
     private String activity_owner_address;
+    @NotNull(message = "Please enter atleast one slot")
     private Set<Slots> slots;
 
     public String getActivity_name() {

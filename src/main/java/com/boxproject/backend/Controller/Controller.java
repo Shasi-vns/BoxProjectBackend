@@ -3,6 +3,7 @@ package com.boxproject.backend.Controller;
 import com.boxproject.backend.Entities.Activity;
 import com.boxproject.backend.Entities.ActivityRequest;
 import com.boxproject.backend.Entities.Slots;
+
 import com.boxproject.backend.Exceptions.ActivityNotFoundException;
 import com.boxproject.backend.Repos.ActivityRepository;
 import com.boxproject.backend.Repos.SlotsRepository;
@@ -43,12 +44,18 @@ public class Controller {
     }
 
     @GetMapping("/getcities")
-    public ResponseEntity<List<String>> findallcitiest(){
+    public ResponseEntity<List<String>> findallcities(){
         List<String> listofCities = activityService.getallcities();
         return new ResponseEntity<>(listofCities,HttpStatus.OK);
     }
+
+    @GetMapping("/activitiesincity/{cityname}") //this method return only activity name in a city
+    public ResponseEntity<List<String>> findallactivitiesincity(@PathVariable String cityname) throws ActivityNotFoundException{
+        List<String> activitiesinCity = activityService.getallactivitiesinCity(cityname);
+        return new ResponseEntity<>(activitiesinCity,HttpStatus.OK);
+    }
  
-    @GetMapping("/getactivitiesbycity/{cityname}")
+    @GetMapping("/getactivitiesbycity/{cityname}") //this method return entire activity in a city
     public ResponseEntity<List<Activity>> findactivitiesByCityName(@PathVariable String cityname) throws ActivityNotFoundException {
         List<Activity> activityList = activityService.findBycityname(cityname);
         return new ResponseEntity<>(activityList,HttpStatus.OK);
@@ -95,4 +102,15 @@ public class Controller {
     }
 
 
+    @PostMapping("/edit")
+    public ResponseEntity<Activity> editActivity(@RequestBody Activity activity) throws ActivityNotFoundException{
+        Activity act = activityService.editActivity(activity);
+        return new ResponseEntity<>(activity,HttpStatus.OK);
+    }
+
+    @DeleteMapping("/deleteActivity/{id}")
+        public ResponseEntity<String> deleteActivtiy(@PathVariable Integer id) throws ActivityNotFoundException{
+            String message = activityService.deleteActivityById(id);
+            return new ResponseEntity<>(message, HttpStatus.OK);
+    }
 }
