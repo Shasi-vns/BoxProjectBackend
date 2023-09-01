@@ -48,4 +48,40 @@ public class ActivityService {
                 actReq.getActivity_owner_address(),actReq.getSlots());
         return activityRepository.save(activity);
     }
+
+    public Activity editActivity(Activity act) throws ActivityNotFoundException {
+        int id = act.getActivity_id();
+        Boolean activityID = activityRepository.existsById(id);
+        if (activityID) {
+            Activity activity = activityRepository.save(act);
+            return activity;
+        }
+        else{
+            throw new ActivityNotFoundException("activity not found with id : " + id);
+        }
+
+    }
+
+    public List<String> getallactivitiesinCity(String Cityname) throws ActivityNotFoundException {
+        List<String> cities = activityRepository.listofcities();
+        if(cities.contains(Cityname)){
+            List<String> activitiesinCity = activityRepository.activitiesinCity(Cityname);
+            return activitiesinCity;
+        }
+        else{
+            throw new ActivityNotFoundException("no Activities found in the city You looking for");
+        }
+    }
+
+    public String deleteActivityById(Integer id) throws ActivityNotFoundException{
+        Boolean isActivityExixt = activityRepository.existsById(id);
+        if(isActivityExixt){
+            activityRepository.deleteById(id);
+            return "Activity deleted Successfully";
+        }
+        else{
+            throw new ActivityNotFoundException("No activity found with id :"+id);
+        }
+
+    }
 }
