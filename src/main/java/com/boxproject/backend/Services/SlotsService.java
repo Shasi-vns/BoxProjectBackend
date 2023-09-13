@@ -12,7 +12,7 @@ public class SlotsService {
     @Autowired
     private SlotsRepository slotsRepository;
 
-    public List<Slots> findallslots(){
+    public List<Slots> findallslots() {
         return slotsRepository.findAll();
     }
 

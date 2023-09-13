@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 // import java.util.List;
 import java.util.Set;
+
 @Data
 @AllArgsConstructor(staticName = "build")
 @NoArgsConstructor
@@ -27,9 +28,9 @@ public class ActivityRequest {
     @Max(5)
     @Min(1)
     private Integer activity_rating;
-    @NotNull(message="Please enter a valid OwnerName")
+    @NotNull(message = "Please enter a valid OwnerName")
     private String activity_owner_name;
-    @NotNull(message="Please enter a valid Mobile Number")
+    @NotNull(message = "Please enter a valid Mobile Number")
     private long activity_ownwer_mobile;
     @NotNull(message = "Please enter a valid Owner address")
     private String activity_owner_address;

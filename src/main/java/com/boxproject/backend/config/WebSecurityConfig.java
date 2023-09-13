@@ -13,10 +13,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import com.boxproject.backend.Entities.Userr;
 import com.boxproject.backend.security.JwtAuthenticationEntryPoint;
-    
+
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
@@ -24,50 +22,47 @@ public class WebSecurityConfig {
     @Autowired
     private JwtAuthenticationEntryPoint AuthFilter;
 
-
     @Bean
-    public UserDetailsService userDetailsService()
-    {
+    public UserDetailsService userDetailsService() {
         return new UserDetailsI();
     }
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder(){
+    public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider(){
+    public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setPasswordEncoder(passwordEncoder());
         authProvider.setUserDetailsService(userDetailsService());
 
         return authProvider;
     }
-        @Bean
+
+    @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-      return config.getAuthenticationManager();
-    
-}
+        return config.getAuthenticationManager();
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-        .csrf()
-        .disable()
-        .authorizeHttpRequests()
-        .requestMatchers("/authenticate","/post","/postt").permitAll()
-        .requestMatchers("/getactivities","/getslots").hasAnyAuthority("USER")
-        // .requestMatchers("/getslots").hasAnyAuthority("USER")
-        .anyRequest().authenticated()
-        .and()
-        .sessionManagement()    
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
-        .authenticationProvider(authenticationProvider())
-        .addFilterBefore(AuthFilter, UsernamePasswordAuthenticationFilter.class)
-        .formLogin();
+        http.cors();
+        http.csrf().disable();
+        http.authorizeHttpRequests()
+                .requestMatchers("/authenticate", "/post", "/postt",  "/deleteUser/**",
+                        "/deleteActivity/**", "/editactivity/**", "/edituser/**")
+                .permitAll()
+                .requestMatchers("/getactivities", "/getslots","/getusernames","/getusers").hasAnyAuthority("USER")
+                // .requestMatchers("/getslots").hasAnyAuthority("USER")
+                .anyRequest().authenticated()
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(AuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }
-

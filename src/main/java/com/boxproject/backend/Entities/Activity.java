@@ -25,9 +25,9 @@ public class Activity {
     private String activity_owner_name;
     private long activity_ownwer_mobile;
     private String activity_owner_address;
-    
-    @OneToMany(targetEntity = Slots.class,cascade= CascadeType.ALL)
-    @JoinColumn(name="activity_slot",referencedColumnName = "activity_id")
+
+    @OneToMany(targetEntity = Slots.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "activity_slot", referencedColumnName = "activity_id")
     private Set<Slots> slots;
 
     public Integer getActivity_id() {

@@ -2,9 +2,6 @@ package com.boxproject.backend.Entities;
 
 import jakarta.persistence.*;
 
-// import java.util.List;
-import java.util.Set;
-
 @Entity
 public class Slots {
     @Id
@@ -13,7 +10,6 @@ public class Slots {
     private String slot_time;
     private String slot_status_Available_Today;
     private String slot_status_Available_Tomorrow;
-   
 
     public Integer getSlot_id() {
         return slot_id;

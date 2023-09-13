@@ -10,8 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.boxproject.backend.Entities.Userr;
 
-public class UserDetailsEntity implements UserDetails{
-    
+public class UserDetailsEntity implements UserDetails {
+
     private Userr user;
 
     public UserDetailsEntity(Userr user) {

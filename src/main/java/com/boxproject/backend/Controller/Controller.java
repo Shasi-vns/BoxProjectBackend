@@ -6,15 +6,13 @@ import com.boxproject.backend.Entities.Slots;
 import com.boxproject.backend.Entities.Userr;
 import com.boxproject.backend.Entities.UserRequest;
 import com.boxproject.backend.Exceptions.ActivityNotFoundException;
-import com.boxproject.backend.Repos.ActivityRepository;
-import com.boxproject.backend.Repos.SlotsRepository;
+import com.boxproject.backend.Exceptions.UsernameAlreadyExistException;
 import com.boxproject.backend.Services.ActivityService;
 import com.boxproject.backend.Services.SlotsService;
 import com.boxproject.backend.Services.UserService;
 import com.boxproject.backend.security.AuthRequest;
 import com.boxproject.backend.security.JwtResponse;
 import com.boxproject.backend.security.JwtUtils;
-
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +21,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-// import @org.springframework.beans.factory.annotation.Autowired(required = true);
 import org.springframework.security.authentication.AuthenticationManager;
 
 import java.util.List;
@@ -31,6 +28,7 @@ import java.util.Optional;
 
 @RestController
 public class Controller {
+    
     @Autowired
     private ActivityService activityService;
     @Autowired
@@ -46,6 +44,12 @@ public class Controller {
     public ResponseEntity<List<Activity>> findallActivity() {
         List<Activity> activityList = activityService.getall();
         return new ResponseEntity<>(activityList, HttpStatus.OK);
+    }
+
+    @GetMapping("/getusernames")
+    public ResponseEntity<List<String>> findAllusernames() {
+        List<String> List = userservice.getAllUsernames();
+        return new ResponseEntity<>(List, HttpStatus.OK);
     }
 
     @GetMapping("/getactivity/{id}")
@@ -74,6 +78,12 @@ public class Controller {
         return new ResponseEntity<>(activityList, HttpStatus.OK);
     }
 
+      @GetMapping("/getusers")
+    public ResponseEntity<List<Userr>> findallusers() {
+        List<Userr> userlist = userservice.getall();
+        return new ResponseEntity<>(userlist, HttpStatus.OK);
+    }
+
     @PostMapping("/post")
     public ResponseEntity<Activity> saveActivity(@RequestBody @Valid ActivityRequest acti) {
         Activity activity = activityService.saveActivity(acti);
@@ -81,16 +91,29 @@ public class Controller {
     }
 
     @PostMapping("/postt")
-    public ResponseEntity<Userr> saveActivity(@RequestBody @Valid UserRequest activ) {
+    public ResponseEntity<Userr> saveActivity(@RequestBody @Valid UserRequest activ)
+            throws UsernameAlreadyExistException {
         activ.setPassword(userservice.encodePassword(activ.getPassword()));
         Userr userr = userservice.saveActivity(activ);
         return new ResponseEntity<>(userr, HttpStatus.OK);
     }
 
-    @PostMapping("/edit")
+    @PostMapping("/edituser")
+    public ResponseEntity<Userr> editActivity(@RequestBody Userr user) throws ActivityNotFoundException {
+        Userr act = userservice.editActivity(user);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @PostMapping("/editactivity")
     public ResponseEntity<Activity> editActivity(@RequestBody Activity activity) throws ActivityNotFoundException {
         Activity act = activityService.editActivity(activity);
         return new ResponseEntity<>(activity, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/deleteUser/{id}")
+    public ResponseEntity<String> deleteActivtiyUser(@PathVariable Integer id) throws ActivityNotFoundException {
+        String message = userservice.deleteUserById(id);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     @DeleteMapping("/deleteActivity/{id}")
@@ -104,7 +127,6 @@ public class Controller {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
         if (authentication.isAuthenticated()) {
-
             JwtResponse resp = Jwtutils.createJwtToken(authRequest);
             // return jwtUt.createJwtToken(authRequest);
             return new ResponseEntity<>(resp, HttpStatus.OK);
